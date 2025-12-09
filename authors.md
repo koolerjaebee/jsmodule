@@ -39,13 +39,13 @@ Source:
 
 Kim J, Lee H, Lim C, Kim J, Jeon Y, Heo J, Park Y, Jo H, Seo J, LEE H,
 Choi S, Kang Y, Jee M (2025). *jsmodule: 'RStudio' Addins and 'Shiny'
-Modules for Medical Research*. R package version 2.0.0,
+Modules for Medical Research*. R package version 2.0.1,
 <https://jinseob2kim.github.io/jsmodule/>.
 
     @Manual{,
       title = {jsmodule: 'RStudio' Addins and 'Shiny' Modules for Medical Research},
       author = {Jinseob Kim and Hyunki Lee and Changwoo Lim and Jinhwan Kim and Yoonkyoung Jeon and Jaewoong Heo and Youngsun Park and Hyungwoo Jo and Jeongmin Seo and Hojun LEE and Sungho Choi and Yeji Kang and Mingu Jee},
       year = {2025},
-      note = {R package version 2.0.0},
+      note = {R package version 2.0.1},
       url = {https://jinseob2kim.github.io/jsmodule/},
     }
