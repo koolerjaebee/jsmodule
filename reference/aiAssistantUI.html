@@ -58,7 +58,7 @@
 
 
 <dl><dt id="arg-id">id<a class="anchor" aria-label="anchor" href="#arg-id"></a></dt>
-<dd><p>id</p></dd>
+<dd><p>Module's namespace ID. Used to create unique identifiers for UI elements.</p></dd>
 
 
 <dt id="arg-show-api-config">show_api_config<a class="anchor" aria-label="anchor" href="#arg-show-api-config"></a></dt>
@@ -67,7 +67,7 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>AI Assistant module UI</p>
+    <p>Shiny UI tagList containing the AI Assistant interface with chat, code editor, and result panels</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -76,14 +76,20 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="co"># Setup: Add API key to .Renviron file</span></span></span>
+<span class="r-in"><span><span class="co"># usethis::edit_r_environ()</span></span></span>
+<span class="r-in"><span><span class="co"># Add line: ANTHROPIC_API_KEY=your_actual_key_here</span></span></span>
+<span class="r-in"><span><span class="co"># Save and restart R</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/DT" class="external-link">DT</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 1: Basic usage with auto-generated variable structure</span></span></span>
 <span class="r-in"><span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidRow</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/column.html" class="external-link">column</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fu">aiAssistantUI</span><span class="op">(</span><span class="st">"ai"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/titlePanel.html" class="external-link">titlePanel</a></span><span class="op">(</span><span class="st">"AI Statistical Assistant"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">aiAssistantUI</span><span class="op">(</span><span class="st">"ai"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -93,10 +99,62 @@
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/callModule.html" class="external-link">callModule</a></span><span class="op">(</span><span class="va">aiAssistant</span>, <span class="st">"ai"</span>,</span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">data</span>,</span></span>
 <span class="r-in"><span>    data_label <span class="op">=</span> <span class="va">data.label</span>,</span></span>
-<span class="r-in"><span>    data_varStruct <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>    api_key <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"ANTHROPIC_API_KEY"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    data_varStruct <span class="op">=</span> <span class="cn">NULL</span>  <span class="co"># Auto-generates variable structure</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 2: With custom variable structure and analysis context</span></span></span>
+<span class="r-in"><span><span class="va">ui2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/titlePanel.html" class="external-link">titlePanel</a></span><span class="op">(</span><span class="st">"Survival Analysis Assistant"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">aiAssistantUI</span><span class="op">(</span><span class="st">"ai"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">server2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">colon</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">data.label</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">jstable</span><span class="fu">::</span><span class="fu"><a href="https://jinseob2kim.github.io/jstable/reference/mk.lev.html" class="external-link">mk.lev</a></span><span class="op">(</span><span class="va">colon</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Custom variable structure for survival analysis</span></span></span>
+<span class="r-in"><span>  <span class="va">var_struct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">colon</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      Base <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rx"</span>, <span class="st">"sex"</span>, <span class="st">"age"</span>, <span class="st">"obstruct"</span>, <span class="st">"nodes"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      Event <span class="op">=</span> <span class="st">"status"</span>,</span></span>
+<span class="r-in"><span>      Time <span class="op">=</span> <span class="st">"time"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/callModule.html" class="external-link">callModule</a></span><span class="op">(</span><span class="va">aiAssistant</span>, <span class="st">"ai"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">data</span>,</span></span>
+<span class="r-in"><span>    data_label <span class="op">=</span> <span class="va">data.label</span>,</span></span>
+<span class="r-in"><span>    data_varStruct <span class="op">=</span> <span class="va">var_struct</span>,</span></span>
+<span class="r-in"><span>    analysis_context <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="st">"Colon cancer adjuvant chemotherapy trial (survival::colon).</span></span></span>
+<span class="r-in"><span><span class="st">       Primary outcome: time to recurrence or death (status/time).</span></span></span>
+<span class="r-in"><span><span class="st">       Treatment groups: Observation, Levamisole, Levamisole+5-FU."</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui2</span>, <span class="va">server2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 3: Production deployment without API config UI</span></span></span>
+<span class="r-in"><span><span class="va">ui_prod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu">aiAssistantUI</span><span class="op">(</span><span class="st">"ai"</span>, show_api_config <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">server_prod</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Relies entirely on .Renviron configuration</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/callModule.html" class="external-link">callModule</a></span><span class="op">(</span><span class="va">aiAssistant</span>, <span class="st">"ai"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    data_label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">jstable</span><span class="fu">::</span><span class="fu"><a href="https://jinseob2kim.github.io/jstable/reference/mk.lev.html" class="external-link">mk.lev</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    show_api_config <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui_prod</span>, <span class="va">server_prod</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
