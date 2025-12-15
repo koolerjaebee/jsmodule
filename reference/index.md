@@ -69,6 +69,8 @@
   : histogramServer: shiny module server for histogram.
 - [`histogramUI()`](https://jinseob2kim.github.io/jsmodule/reference/histogramUI.md)
   : histogramUI: shiny module UI for histogram
+- [`is_production_environment()`](https://jinseob2kim.github.io/jsmodule/reference/is_production_environment.md)
+  : Detect if running in production/deployment environment
 - [`jsBasicAddin()`](https://jinseob2kim.github.io/jsmodule/reference/jsBasicAddin.md)
   : jsBasicAddin: Rstudio addin of jsBasicGadget
 - [`jsBasicExtAddin()`](https://jinseob2kim.github.io/jsmodule/reference/jsBasicExtAddin.md)
@@ -136,6 +138,8 @@
   model as integer
 - [`rocUI()`](https://jinseob2kim.github.io/jsmodule/reference/rocUI.md)
   : rocUI: shiny module UI for roc analysis
+- [`safe_eval_expr()`](https://jinseob2kim.github.io/jsmodule/reference/safe_eval_expr.md)
+  : Safe evaluation wrapper with environment-aware security
 - [`scatterServer()`](https://jinseob2kim.github.io/jsmodule/reference/scatterServer.md)
   : scatterServer: shiny module server for scatterplot.
 - [`scatterUI()`](https://jinseob2kim.github.io/jsmodule/reference/scatterUI.md)

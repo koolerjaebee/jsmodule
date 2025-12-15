@@ -359,15 +359,43 @@ MatchIt, timeROC</code></pre>
 <h2 id="security-considerations">Security Considerations<a class="anchor" aria-label="anchor" href="#security-considerations"></a></h2>
 <div class="section level3">
 <h3 id="code-execution-security">Code Execution Security<a class="anchor" aria-label="anchor" href="#code-execution-security"></a></h3>
+<div class="section level4">
+<h4 id="environment-aware-execution-development-vs-production">Environment-Aware Execution (Development vs Production)<a class="anchor" aria-label="anchor" href="#environment-aware-execution-development-vs-production"></a></h4>
+<p>The AI Assistant module implements <strong>environment-aware code execution</strong> to balance security and usability:</p>
+<p><strong>Development Mode</strong> (Default): - Uses standard <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> for code execution - Easier debugging and development - All console output visible - Suitable for local, trusted environments</p>
+<p><strong>Production Mode</strong>: - Uses <code><a href="https://jeroen.r-universe.dev/RAppArmor/reference/eval.secure.html" class="external-link">RAppArmor::eval.secure()</a></code> for sandboxed execution (Linux only) - Enhanced security with resource limits: - 1GB RAM limit - 1MB file size limit - 10 second timeout - No new process creation - Prevents system command execution - Required for public deployments</p>
+<p><strong>Environment Detection</strong>: The module automatically detects production environments using: 1. <code>DEPLOYMENT_ENV</code> environment variable (<code>production</code> or <code>development</code>) 2. shinyapps.io deployment detection 3. RStudio Connect detection 4. <code>.production</code> marker file</p>
+<p><strong>Setting Deployment Mode</strong>:</p>
+<p>For local development (default):</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># No setup needed - defaults to development mode</span></span>
+<span><span class="co"># Or explicitly set in .Renviron:</span></span>
+<span><span class="va">DEPLOYMENT_ENV</span><span class="op">=</span><span class="va">development</span></span></code></pre></div>
+<p>For production deployment:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Add to .Renviron file:</span></span>
+<span><span class="va">DEPLOYMENT_ENV</span><span class="op">=</span><span class="va">production</span></span></code></pre></div>
+<p>Or create a marker file:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># In your app directory</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">touch</span> .production</span></code></pre></div>
+<p><strong>Linux Server Setup</strong> (for RAppArmor):</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># Install AppArmor</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">sudo</span> apt-get install apparmor apparmor-utils libapparmor-dev</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="co"># Install R package</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="ex">R</span> <span class="at">-e</span> <span class="st">"install.packages('RAppArmor')"</span></span></code></pre></div>
+<p><strong>Platform Support</strong>: - ✅ <strong>Linux</strong>: Full RAppArmor sandboxing available - ⚠️ <strong>macOS/Windows</strong>: Falls back to standard eval with warning in production mode - Recommendation: Deploy on Linux servers for maximum security</p>
+</div>
+<div class="section level4">
+<h4 id="basic-security-features">Basic Security Features<a class="anchor" aria-label="anchor" href="#basic-security-features"></a></h4>
 <ul><li>
-<strong>Sandboxed Execution</strong>: Code runs in restricted environment</li>
-<li>
-<strong>No File Access</strong>: Cannot read/write files on system</li>
-<li>
-<strong>No Network Access</strong>: Cannot make external API calls (except AI provider APIs)</li>
-<li>
 <strong>Package Whitelist</strong>: Only approved packages allowed</li>
+<li>
+<strong>Pre-execution Review</strong>: Code can be edited before execution</li>
+<li>
+<strong>Error Handling</strong>: Safe error messages without system information</li>
 </ul></div>
+</div>
 <div class="section level3">
 <h3 id="api-key-security">API Key Security<a class="anchor" aria-label="anchor" href="#api-key-security"></a></h3>
 <p><strong>⚠️ IMPORTANT: API Key Handling</strong></p>
@@ -379,7 +407,7 @@ MatchIt, timeROC</code></pre>
 <div class="section level4">
 <h4 id="best-practices-by-deployment-type">Best Practices by Deployment Type<a class="anchor" aria-label="anchor" href="#best-practices-by-deployment-type"></a></h4>
 <p><strong>For Personal/Desktop Use</strong> (Recommended):</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Store API key in .Renviron (user's home directory)</span></span>
 <span><span class="co"># This keeps the key private to your user account</span></span>
 <span><span class="va">ANTHROPIC_API_KEY</span><span class="op">=</span><span class="va">your_key_here</span></span></code></pre></div>
@@ -415,7 +443,7 @@ MatchIt, timeROC</code></pre>
 <div class="section level3">
 <h3 id="recommended-security-setup">Recommended Security Setup<a class="anchor" aria-label="anchor" href="#recommended-security-setup"></a></h3>
 <p><strong>For Maximum Security</strong>:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 1. Store API key in .Renviron (never in code)</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu">edit_r_environ</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># Add: ANTHROPIC_API_KEY=your_key</span></span>
