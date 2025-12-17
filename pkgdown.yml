@@ -2,9 +2,11 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
+  ai-assistant-guide-ko: ai-assistant-guide-ko.html
+  ai-assistant-guide: ai-assistant-guide.html
   jsmodule_subgroup_cmprsk: jsmodule_subgroup_cmprsk.html
   jsmodule: jsmodule.html
-last_built: 2025-12-17T06:00Z
+last_built: 2025-12-17T09:26Z
 urls:
   reference: https://jinseob2kim.github.io/jsmodule/reference
   article: https://jinseob2kim.github.io/jsmodule/articles
